@@ -5,7 +5,7 @@ const app = express();
 
 app.use(cors({
     origin : "http://localhost:4200",
-    credentials : "true"
+    credentials : true
 
 }));
 
@@ -23,7 +23,7 @@ app.get("/api/health", (req, res)=>{
 
 // Global error handling to avoid try catch nuisance 
 app.use((err, req, res, next) =>{
-    console.log(err.stack);
+    console.error(err.stack);
 
     res.status(err.statusCode || 500).json({
         status : "error",
@@ -34,3 +34,4 @@ app.use((err, req, res, next) =>{
 
 });
 
+module.exports = app
