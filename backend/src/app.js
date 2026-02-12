@@ -23,6 +23,7 @@ app.get("/api/health", (req, res)=>{
 });
 
 // Global error handling to avoid try catch nuisance 
+// Added api error handling properly so instead of generic "internal server error, we get exact information"
 app.use((err, req, res, next) =>{
     if(!(err instanceof ApiError)) {
         console.log(err);
