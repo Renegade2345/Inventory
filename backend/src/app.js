@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const ApiError = require("./utils/ApiError");
 
 const app = express();
 
@@ -23,11 +24,17 @@ app.get("/api/health", (req, res)=>{
 
 // Global error handling to avoid try catch nuisance 
 app.use((err, req, res, next) =>{
-    console.error(err.stack);
+    if(!(err instanceof ApiError)) {
+        console.log(err);
+        err = new ApiError(500, "Something went wrong");
 
-    res.status(err.statusCode || 500).json({
+
+    }
+    
+
+    res.status(err.statusCode).json({
         status : "error",
-        message : err.message || "Internal server error"
+        message : err.message
 
     });
 
