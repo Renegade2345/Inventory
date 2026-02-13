@@ -37,7 +37,7 @@ exports.login = asyncHandler(async(req,res,next)=>{
   });
 });
 
-exports.verifytoken = asynchandler(async(req, res)=>{
+exports.verifyToken = asyncHandler(async(req, res)=>{
       res.status(200).json({
     status: "success",
     message: "Token is valid",
