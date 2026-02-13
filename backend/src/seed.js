@@ -16,11 +16,11 @@ const seedUser = async () => {
       process.exit();
     }
 
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+
 
     await User.create({
       email: "admin@inventory.com",
-      password: hashedPassword,
+       password: "admin123",
     });
 
     console.log("Demo user created successfully");
