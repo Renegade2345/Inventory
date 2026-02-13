@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const ApiError = require("./utils/ApiError");
 const authRoutes = require("./routes/authRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.get("/api/health", (req, res)=>{
 });
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/products", productRoutes);
 
 // Global error handling to avoid try catch nuisance 
 // Added api error handling properly so instead of generic "internal server error, we get exact information"
