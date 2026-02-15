@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService, Product } from '../../../core/services/product';
 import { RouterModule } from '@angular/router';
 
+import { ProductService, Product } from '../../../core/services/product';
 
 @Component({
   selector: 'app-product-list',
@@ -11,26 +11,30 @@ import { RouterModule } from '@angular/router';
   templateUrl: './product-list.html',
   styleUrls: ['./product-list.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent {
 
   products: Product[] = [];
-  loading: boolean = true;
-  error: string = '';
 
-  constructor(private productService: ProductService) {}
+  loading = true;
 
-  ngOnInit(): void {
-    console.log("ProductListComponent loaded");
-    this.loadProducts();
+  error = '';
+
+  constructor(private productService: ProductService) {
+
+    // force fetch every time component constructed
+    this.fetchProducts();
+
   }
 
-  loadProducts(): void {
+  fetchProducts(): void {
+
+    this.loading = true;
 
     this.productService.getProducts().subscribe({
 
       next: (products: Product[]) => {
 
-        console.log("Products received:", products);
+        console.log("Products loaded:", products);
 
         this.products = products;
 
@@ -40,11 +44,38 @@ export class ProductListComponent implements OnInit {
 
       error: (err) => {
 
-        console.error("Error loading products:", err);
+        console.error(err);
 
         this.error = "Failed to load products";
 
         this.loading = false;
+
+      }
+
+    });
+
+  }
+
+  deleteProduct(id: string): void {
+
+    const confirmDelete = confirm("Delete this product?");
+
+    if (!confirmDelete) return;
+
+    this.productService.deleteProduct(id).subscribe({
+
+      next: () => {
+
+        // remove instantly from UI
+        this.products = this.products.filter(p => p._id !== id);
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert("Delete failed");
 
       }
 

@@ -1,12 +1,12 @@
 <div>
-    <h2>Product Inventory</h2>
-<button routerLink="/products/new">
-  Create Product
-</button>
 
+  <h2>Product Inventory</h2>
 
+  <button routerLink="/products/new">
+    Create Product
+  </button>
 
-
+  <br><br>
 
   <div *ngIf="loading">
     Loading products...
@@ -20,15 +20,24 @@
     No products found.
   </div>
 
-  <table *ngIf="!loading && products.length > 0" border="1">
+  <table *ngIf="!loading && products.length > 0" border="1" cellpadding="10">
 
     <thead>
+
       <tr>
+
         <th>Name</th>
+
         <th>Price</th>
+
         <th>Quantity</th>
+
         <th>Category</th>
+
+        <th>Actions</th>
+
       </tr>
+
     </thead>
 
     <tbody>
@@ -36,9 +45,20 @@
       <tr *ngFor="let product of products">
 
         <td>{{ product.name }}</td>
+
         <td>{{ product.price }}</td>
+
         <td>{{ product.quantity }}</td>
+
         <td>{{ product.category }}</td>
+
+        <td>
+
+          <button (click)="deleteProduct(product._id!)">
+            Delete
+          </button>
+
+        </td>
 
       </tr>
 
