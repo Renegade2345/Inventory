@@ -8,13 +8,13 @@ import { AuthGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
 
-  // public route
+  // Public route
   {
     path: 'login',
     component: LoginComponent
   },
 
-  // protected routes
+  // Protected routes
   {
     path: 'products',
     component: ProductListComponent,
@@ -27,14 +27,14 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
-  // default redirect
+  // Default redirect
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
 
-  // fallback route
+  // Fallback
   {
     path: '**',
     redirectTo: 'login'

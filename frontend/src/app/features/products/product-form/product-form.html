@@ -1,1 +1,42 @@
-<p>product-form works!</p>
+<div class="container">
+
+  <h2>Create Product</h2>
+
+  <div *ngIf="error" style="color:red">
+    {{ error }}
+  </div>
+
+  <form (ngSubmit)="onSubmit()">
+
+    <div>
+      <label>Name:</label>
+      <input type="text" [(ngModel)]="product.name" name="name" required>
+    </div>
+
+    <div>
+      <label>Description:</label>
+      <input type="text" [(ngModel)]="product.description" name="description">
+    </div>
+
+    <div>
+      <label>Price:</label>
+      <input type="number" [(ngModel)]="product.price" name="price" required>
+    </div>
+
+    <div>
+      <label>Quantity:</label>
+      <input type="number" [(ngModel)]="product.quantity" name="quantity" required>
+    </div>
+
+    <div>
+      <label>Category:</label>
+      <input type="text" [(ngModel)]="product.category" name="category">
+    </div>
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Creating...' : 'Create Product' }}
+    </button>
+
+  </form>
+
+</div>
