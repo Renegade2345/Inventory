@@ -1,4 +1,4 @@
-<div class="container">
+<div>
 
   <h2>Product Inventory</h2>
 
@@ -10,7 +10,12 @@
     {{ error }}
   </div>
 
-  <table *ngIf="!loading && products.length > 0" border="1" cellpadding="10">
+  <div *ngIf="!loading && products.length === 0">
+    No products found.
+  </div>
+
+  <table *ngIf="!loading && products.length > 0" border="1">
+
     <thead>
       <tr>
         <th>Name</th>
@@ -21,18 +26,18 @@
     </thead>
 
     <tbody>
+
       <tr *ngFor="let product of products">
+
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.quantity }}</td>
         <td>{{ product.category }}</td>
+
       </tr>
+
     </tbody>
 
   </table>
-
-  <div *ngIf="!loading && products.length === 0">
-    No products found.
-  </div>
 
 </div>

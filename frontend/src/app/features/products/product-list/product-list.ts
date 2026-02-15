@@ -7,32 +7,47 @@ import { ProductService, Product } from '../../../core/services/product';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './product-list.html',
-  styleUrl: './product-list.css'
+  styleUrls: ['./product-list.css']
 })
 export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
-  loading = true;
-  error = '';
+  loading: boolean = true;
+  error: string = '';
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    console.log("ProductListComponent loaded");
     this.loadProducts();
   }
 
   loadProducts(): void {
+
     this.productService.getProducts().subscribe({
-      next: (data) => {
-        console.log("Products received:", data); // DEBUG LINE
-        this.products = data;
+
+      next: (products: Product[]) => {
+
+        console.log("Products received:", products);
+
+        this.products = products;
+
         this.loading = false;
+
       },
+
       error: (err) => {
+
         console.error("Error loading products:", err);
-        this.error = 'Failed to load products';
+
+        this.error = "Failed to load products";
+
         this.loading = false;
+
       }
+
     });
+
   }
+
 }

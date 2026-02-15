@@ -38,6 +38,12 @@ export class ProductService {
 
   // FIXED — extract data array
   getProducts(): Observable<Product[]> {
+
+  const token = localStorage.getItem('token');
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
     return this.http
       .get<ProductApiResponse>(this.API_URL, {
         headers: this.getHeaders()
