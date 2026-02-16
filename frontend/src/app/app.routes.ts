@@ -21,11 +21,20 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+
+
   {
     path: 'products/new',
     component: ProductFormComponent,
     canActivate: [AuthGuard]
   },
+
+
+  {
+  path: 'products/edit/:id',
+  component: ProductFormComponent,
+  canActivate: [AuthGuard]
+},
 
   // Default redirect
   {

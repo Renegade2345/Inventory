@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 import { ProductService, Product } from '../../../core/services/product';
 
@@ -9,34 +9,46 @@ import { ProductService, Product } from '../../../core/services/product';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './product-list.html',
-  styleUrls: ['./product-list.css']
+  styleUrl: './product-list.css'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
 
-  loading = true;
+  loading = false;
 
   error = '';
 
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService,
+    private router: Router
+  ) {}
 
-    // force fetch every time component constructed
-    this.fetchProducts();
+  ngOnInit(): void {
 
+    console.log("ProductListComponent initialized");
+
+    this.loadProducts();
   }
 
-  fetchProducts(): void {
 
-    this.loading = true;
+  // LOAD PRODUCTS
+  loadProducts(): void {
 
-    this.productService.getProducts().subscribe({
+  console.log("Loading products...");
 
-      next: (products: Product[]) => {
+  this.loading = true;
 
-        console.log("Products loaded:", products);
+  this.error = '';
 
-        this.products = products;
+  this.productService.getProducts()
+    .subscribe({
+
+      next: (data) => {
+
+        console.log("Products received:", data);
+
+        this.products = data;
 
         this.loading = false;
 
@@ -44,43 +56,67 @@ export class ProductListComponent {
 
       error: (err) => {
 
-        console.error(err);
+        console.error("Error loading products:", err);
 
         this.error = "Failed to load products";
 
         this.loading = false;
 
+      },
+
+      complete: () => {
+
+        // SAFETY NET
+        this.loading = false;
+
+        console.log("Loading finished");
+
       }
 
     });
 
-  }
+}
 
+editProduct(id: string): void {
+  this.router.navigate(['/products/edit', id]);
+}
+
+
+
+  // DELETE PRODUCT
   deleteProduct(id: string): void {
 
-    const confirmDelete = confirm("Delete this product?");
+    const confirmDelete = confirm("Are you sure you want to delete this product?");
 
     if (!confirmDelete) return;
 
-    this.productService.deleteProduct(id).subscribe({
+    this.productService.deleteProduct(id)
+      .subscribe({
 
-      next: () => {
+        next: () => {
 
-        // remove instantly from UI
-        this.products = this.products.filter(p => p._id !== id);
+          console.log("Product deleted");
 
-      },
+          // reload list
+          this.loadProducts();
+        },
 
-      error: (err) => {
+        error: (err) => {
 
-        console.error(err);
+          console.error("Delete failed", err);
 
-        alert("Delete failed");
+          alert("Failed to delete product");
+        }
 
-      }
+      });
 
-    });
+  }
 
+
+  // NAVIGATE TO CREATE
+  goToCreate(): void {
+
+    this.router.navigate(['/products/new']);
   }
 
 }

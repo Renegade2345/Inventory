@@ -1,32 +1,38 @@
-<div>
+<div class="container">
 
   <h2>Product Inventory</h2>
 
-  <button routerLink="/products/new">
+  <button (click)="goToCreate()">
     Create Product
   </button>
 
-  <br><br>
+  <hr>
 
+
+  <!-- LOADING -->
   <div *ngIf="loading">
     Loading products...
   </div>
 
+
+  <!-- ERROR -->
   <div *ngIf="error">
     {{ error }}
   </div>
 
-  <div *ngIf="!loading && products.length === 0">
-    No products found.
-  </div>
 
-  <table *ngIf="!loading && products.length > 0" border="1" cellpadding="10">
+  <!-- TABLE -->
+  <table *ngIf="!loading && products.length > 0"
+         border="1"
+         cellpadding="10">
 
     <thead>
 
       <tr>
 
         <th>Name</th>
+
+        <th>Description</th>
 
         <th>Price</th>
 
@@ -40,11 +46,14 @@
 
     </thead>
 
+
     <tbody>
 
       <tr *ngFor="let product of products">
 
         <td>{{ product.name }}</td>
+
+        <td>{{ product.description }}</td>
 
         <td>{{ product.price }}</td>
 
@@ -53,6 +62,8 @@
         <td>{{ product.category }}</td>
 
         <td>
+
+            <button (click)="editProduct(product._id!)">Edit</button>
 
           <button (click)="deleteProduct(product._id!)">
             Delete
@@ -65,5 +76,14 @@
     </tbody>
 
   </table>
+
+
+  <!-- NO DATA -->
+  <div *ngIf="!loading && products.length === 0">
+
+    No products found.
+
+  </div>
+
 
 </div>

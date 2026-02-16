@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+
 import { ProductService, Product } from '../../../core/services/product';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css'
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
 
   product: Product = {
     name: '',
@@ -21,32 +22,91 @@ export class ProductFormComponent {
     category: ''
   };
 
-  loading = false;
-  error = '';
+  isEditMode = false;
+
+  loading = false;   // FIX: add this
+  error = '';        // FIX: add this
+
+  productId: string | null = null;
 
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  onSubmit() {
+  ngOnInit(): void {
+
+    this.productId = this.route.snapshot.paramMap.get('id');
+
+    if (this.productId) {
+
+      this.isEditMode = true;
+
+      this.loading = true;
+
+      this.productService.getProduct(this.productId)
+        .subscribe({
+
+          next: (data:Product) => {
+            this.product = data;
+          },
+
+          error: () => {
+            this.error = 'Failed to load product';
+          },
+
+          complete: () => {
+            this.loading = false;
+          }
+
+        });
+
+    }
+
+  }
+
+
+  onSubmit(): void {
 
     this.loading = true;
+
     this.error = '';
 
-    this.productService.createProduct(this.product).subscribe({
+    if (this.isEditMode && this.productId) {
 
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/products']);
-      },
+      this.productService.updateProduct(this.productId, this.product)
+        .subscribe({
 
-      error: (err) => {
-        this.error = err.error?.message || 'Failed to create product';
-        this.loading = false;
-      }
+          next: () => {
+            this.router.navigate(['/products']);
+          },
 
-    });
+          error: () => {
+            this.error = 'Update failed';
+            this.loading = false;
+          }
+
+        });
+
+    }
+    else {
+
+      this.productService.createProduct(this.product)
+        .subscribe({
+
+          next: () => {
+            this.router.navigate(['/products']);
+          },
+
+          error: () => {
+            this.error = 'Creation failed';
+            this.loading = false;
+          }
+
+        });
+
+    }
 
   }
 

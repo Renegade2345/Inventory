@@ -33,9 +33,11 @@
       <input type="text" [(ngModel)]="product.category" name="category">
     </div>
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Creating...' : 'Create Product' }}
-    </button>
+<button type="submit" [disabled]="loading">
+
+  {{ loading ? 'Saving...' : (isEditMode ? 'Update Product' : 'Create Product') }}
+
+</button>
 
   </form>
 
