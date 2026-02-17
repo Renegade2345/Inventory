@@ -15,7 +15,7 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
 
-  loading = false;
+  loading = true;
 
   error = '';
 
@@ -25,97 +25,52 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    console.log("ProductListComponent initialized");
-
     this.loadProducts();
   }
 
-
-  // LOAD PRODUCTS
   loadProducts(): void {
 
-  console.log("Loading products...");
+    this.loading = true;
+    this.error = '';
 
-  this.loading = true;
+    this.productService.getProducts().subscribe({
 
-  this.error = '';
-
-  this.productService.getProducts()
-    .subscribe({
-
-      next: (data) => {
-
-        console.log("Products received:", data);
-
-        this.products = data;
-
+      next: (products) => {
+        this.products = products;
         this.loading = false;
-
       },
 
       error: (err) => {
-
-        console.error("Error loading products:", err);
-
-        this.error = "Failed to load products";
-
+        console.error(err);
+        this.error = 'Failed to load products';
         this.loading = false;
-
-      },
-
-      complete: () => {
-
-        // SAFETY NET
-        this.loading = false;
-
-        console.log("Loading finished");
-
       }
 
     });
-
-}
-
-editProduct(id: string): void {
-  this.router.navigate(['/products/edit', id]);
-}
-
-
-
-  // DELETE PRODUCT
-  deleteProduct(id: string): void {
-
-    const confirmDelete = confirm("Are you sure you want to delete this product?");
-
-    if (!confirmDelete) return;
-
-    this.productService.deleteProduct(id)
-      .subscribe({
-
-        next: () => {
-
-          console.log("Product deleted");
-
-          // reload list
-          this.loadProducts();
-        },
-
-        error: (err) => {
-
-          console.error("Delete failed", err);
-
-          alert("Failed to delete product");
-        }
-
-      });
-
   }
 
+  deleteProduct(id: string): void {
 
-  // NAVIGATE TO CREATE
+    if (!confirm("Delete this product?")) return;
+
+    this.productService.deleteProduct(id).subscribe({
+
+      next: () => {
+        this.products = this.products.filter(p => p._id !== id);
+      },
+
+      error: () => {
+        alert("Delete failed");
+      }
+
+    });
+  }
+
+  editProduct(id: string): void {
+    this.router.navigate(['/products/edit', id]);
+  }
+
   goToCreate(): void {
-
     this.router.navigate(['/products/new']);
   }
 

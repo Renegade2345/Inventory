@@ -2,50 +2,30 @@
 
   <h2>Product Inventory</h2>
 
-  <button (click)="goToCreate()">
-    Create Product
-  </button>
+  <button (click)="goToCreate()">Create Product</button>
 
   <hr>
 
-
-  <!-- LOADING -->
   <div *ngIf="loading">
     Loading products...
   </div>
 
-
-  <!-- ERROR -->
-  <div *ngIf="error">
+  <div *ngIf="error" style="color:red">
     {{ error }}
   </div>
 
-
-  <!-- TABLE -->
-  <table *ngIf="!loading && products.length > 0"
-         border="1"
-         cellpadding="10">
+  <table *ngIf="!loading && products.length > 0" border="1">
 
     <thead>
-
       <tr>
-
         <th>Name</th>
-
         <th>Description</th>
-
         <th>Price</th>
-
         <th>Quantity</th>
-
         <th>Category</th>
-
         <th>Actions</th>
-
       </tr>
-
     </thead>
-
 
     <tbody>
 
@@ -63,7 +43,9 @@
 
         <td>
 
-            <button (click)="editProduct(product._id!)">Edit</button>
+          <button (click)="editProduct(product._id!)">
+            Edit
+          </button>
 
           <button (click)="deleteProduct(product._id!)">
             Delete
@@ -77,13 +59,8 @@
 
   </table>
 
-
-  <!-- NO DATA -->
   <div *ngIf="!loading && products.length === 0">
-
-    No products found.
-
+    No products found
   </div>
-
 
 </div>
