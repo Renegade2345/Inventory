@@ -1,20 +1,49 @@
 <div class="container">
 
-  <h2>Product Inventory</h2>
+  <h2>Inventory Dashboard</h2>
 
-  <button (click)="goToCreate()">Create Product</button>
+  <!-- Controls -->
+  <div class="controls">
 
-  <hr>
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (input)="loadProducts()"
+    />
 
+    <select [(ngModel)]="selectedCategory" (change)="loadProducts()">
+      <option value="">All Categories</option>
+      <option value="electronics">Electronics</option>
+      <option value="tools">Tools</option>
+      <option value="weapons">Weapons</option>
+    </select>
+
+    <select [(ngModel)]="sortOption" (change)="loadProducts()">
+      <option value="">Sort by</option>
+      <option value="price_asc">Price Low → High</option>
+      <option value="price_desc">Price High → Low</option>
+    </select>
+
+    <button (click)="goToCreate()">+ Create Product</button>
+
+  </div>
+
+
+  <!-- Loading -->
   <div *ngIf="loading">
     Loading products...
   </div>
 
-  <div *ngIf="error" style="color:red">
+
+  <!-- Error -->
+  <div *ngIf="error">
     {{ error }}
   </div>
 
-  <table *ngIf="!loading && products.length > 0" border="1">
+
+  <!-- Product Table -->
+  <table *ngIf="!loading && products.length > 0">
 
     <thead>
       <tr>
@@ -59,6 +88,8 @@
 
   </table>
 
+
+  <!-- Empty State -->
   <div *ngIf="!loading && products.length === 0">
     No products found
   </div>
