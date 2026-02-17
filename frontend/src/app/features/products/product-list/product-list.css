@@ -1,22 +1,103 @@
+/* ============================= */
+/* INVENTORY DASHBOARD STYLING  */
+/* ============================= */
+
 .container {
-  width: 900px;
-  margin: auto;
-  font-family: Arial;
+  padding: 24px 32px;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: #f8fafc;
+  min-height: 100vh;
 }
 
-.toolbar {
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
+.header {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-input, select {
-  padding: 6px;
+.header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0f172a;
 }
+
+/* ============================= */
+/* CONTROLS */
+/* ============================= */
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.controls input,
+.controls select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  background: white;
+}
+
+.controls input {
+  width: 240px;
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
 
 button {
-  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.create-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.create-btn:hover {
+  background: #1d4ed8;
+}
+
+.edit-btn {
+  background: #0ea5e9;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #0284c7;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* ============================= */
+/* TABLE */
+/* ============================= */
+
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
 }
 
 table {
@@ -24,15 +105,55 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+thead {
+  background: #f1f5f9;
 }
 
 th {
-  background: #f5f5f5;
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #334155;
+}
+
+td {
+  padding: 12px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* hover row */
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ============================= */
+/* STATES */
+/* ============================= */
+
+.loading {
+  padding: 20px;
+  font-size: 16px;
+  color: #64748b;
 }
 
 .error {
+  padding: 20px;
   color: red;
+}
+
+.empty {
+  padding: 20px;
+  color: #64748b;
+}
+
+/* ============================= */
+/* ACTION BUTTON GROUP */
+/* ============================= */
+
+.actions {
+  display: flex;
+  gap: 6px;
 }

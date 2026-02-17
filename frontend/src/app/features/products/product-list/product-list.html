@@ -1,97 +1,108 @@
 <div class="container">
 
-  <h2>Inventory Dashboard</h2>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Inventory Dashboard</h1>
 
-  <!-- Controls -->
+    <button class="create-btn" (click)="goToCreate()">
+      + Create Product
+    </button>
+  </div>
+
+  <!-- CONTROLS -->
   <div class="controls">
 
     <input
       type="text"
       placeholder="Search products..."
       [(ngModel)]="searchTerm"
-      (input)="loadProducts()"
-    />
+      (input)="onSearch()"
+    >
 
-    <select [(ngModel)]="selectedCategory" (change)="loadProducts()">
+    <select [(ngModel)]="selectedCategory" (change)="onFilterChange()">
       <option value="">All Categories</option>
       <option value="electronics">Electronics</option>
       <option value="tools">Tools</option>
       <option value="weapons">Weapons</option>
     </select>
 
-    <select [(ngModel)]="sortOption" (change)="loadProducts()">
+    <select [(ngModel)]="sortOption" (change)="onFilterChange()">
       <option value="">Sort by</option>
-      <option value="price_asc">Price Low → High</option>
-      <option value="price_desc">Price High → Low</option>
+      <option value="price_asc">Price ↑</option>
+      <option value="price_desc">Price ↓</option>
     </select>
-
-    <button (click)="goToCreate()">+ Create Product</button>
 
   </div>
 
+  <!-- STATES -->
 
-  <!-- Loading -->
-  <div *ngIf="loading">
+  <div *ngIf="loading" class="loading">
     Loading products...
   </div>
 
-
-  <!-- Error -->
-  <div *ngIf="error">
+  <div *ngIf="error" class="error">
     {{ error }}
   </div>
 
+  <div *ngIf="!loading && products.length === 0" class="empty">
+    No products found.
+  </div>
 
-  <!-- Product Table -->
-  <table *ngIf="!loading && products.length > 0">
+  <!-- TABLE -->
 
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Category</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <div *ngIf="!loading && products.length > 0" class="table-wrapper">
 
-    <tbody>
+    <table>
 
-      <tr *ngFor="let product of products">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-        <td>{{ product.name }}</td>
+      <tbody>
 
-        <td>{{ product.description }}</td>
+        <tr *ngFor="let product of products">
 
-        <td>{{ product.price }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.category }}</td>
 
-        <td>{{ product.quantity }}</td>
+          <td>
 
-        <td>{{ product.category }}</td>
+            <div class="actions">
 
-        <td>
+              <button
+                class="edit-btn"
+                (click)="editProduct(product._id!)"
+              >
+                Edit
+              </button>
 
-          <button (click)="editProduct(product._id!)">
-            Edit
-          </button>
+              <button
+                class="delete-btn"
+                (click)="deleteProduct(product._id!)"
+              >
+                Delete
+              </button>
 
-          <button (click)="deleteProduct(product._id!)">
-            Delete
-          </button>
+            </div>
 
-        </td>
+          </td>
 
-      </tr>
+        </tr>
 
-    </tbody>
+      </tbody>
 
-  </table>
+    </table>
 
-
-  <!-- Empty State -->
-  <div *ngIf="!loading && products.length === 0">
-    No products found
   </div>
 
 </div>
